@@ -65,6 +65,8 @@ class FollowRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def follow_request_params
+      # if param.fetch(:recipoent_id) == current_user.id
+      #   render
       params.require(:follow_request).permit(:recipient_id, :sender_id, :status)
     end
 end
