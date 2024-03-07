@@ -14,4 +14,10 @@ class UserPolicy
   def feed?
     true
   end
+  def discover?
+    true
+  end
+  def liked?
+    true
+  end
 end
