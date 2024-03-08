@@ -26,9 +26,6 @@ class PhotosController < ApplicationController
     @photo = Photo.new(photo_params)
     @photo.owner = current_user
     
-    authorize @photo
-    skip_authorization 
-    
     respond_to do |format|
       if @photo.save
         format.html { redirect_to @photo, notice: "Photo was successfully created." }
