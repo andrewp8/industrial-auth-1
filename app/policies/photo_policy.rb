@@ -10,11 +10,8 @@ class PhotoPolicy < ApplicationPolicy
     true
   end
 
-  # Our policy is that a photo should only be seen by the owner or followers
-  # of the owner, unless the owner is not private in which case anyone can
-  # see it
   def show?
-    user == photo.owner || !photo.owner.private? || photo.owner.followers.include?(user)
+    user == photo.owner || (photo.owner.followers.include?(user) && !photo.owner.pending_received_follow_requests.exists?(sender_id: user.id))
   end
 
   def update?

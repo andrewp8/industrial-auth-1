@@ -28,6 +28,7 @@ class FollowRequestsController < ApplicationController
     respond_to do |format|
       if @follow_request.sender == @follow_request.recipient
         flash.now[:alert] = "Sender can't follow themselves"
+        # format.html { render :new, status: :unprocessable_entity }
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: { error: "Sender can't follow themselves" }, status: :unprocessable_entity }
       elsif @follow_request.save

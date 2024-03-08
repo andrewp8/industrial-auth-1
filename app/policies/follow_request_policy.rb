@@ -16,10 +16,10 @@ class FollowRequestPolicy < ApplicationPolicy
   end
 
   def update?
-    user == photo.owner
+    user == follow_request.recipient || user == follow_request.sender
   end
 
   def destroy?
-    user == photo.owner
+    user == follow_request.recipient || user == follow_request.sender
   end
 end

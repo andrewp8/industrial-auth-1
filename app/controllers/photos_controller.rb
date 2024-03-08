@@ -9,6 +9,7 @@ class PhotosController < ApplicationController
 
   # GET /photos/1 or /photos/1.json
   def show
+    
   end
 
   # GET /photos/new
