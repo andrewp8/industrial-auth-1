@@ -8,7 +8,4 @@ class LikePolicy < ApplicationPolicy
   def create?
     true
   end
-  def show?
-    user == 
-  end
 end

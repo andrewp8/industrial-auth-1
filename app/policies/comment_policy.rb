@@ -19,10 +19,10 @@ class CommentPolicy
   end
   
   def edit?
-    user == comment.author
+    update?
   end
 
   def destroy?
-    user == comment.author
+    update?
   end
 end

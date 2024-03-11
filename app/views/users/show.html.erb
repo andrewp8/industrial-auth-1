@@ -19,9 +19,12 @@
       </div>
     </div>
   <% else %>
-    <% unless alert_rendered %> <!--make sure  private_alert run once-->
+    <% unless alert_rendered %> <!--make sure private_alert run once-->
       <%= render 'users/private_alert' %>
       <% alert_rendered = true %>
     <% end %>
   <% end %>
 <% end %>
+
+
+<% if current_user == @user || !@user.private? || current_user.leaders.include?(@user) %>
