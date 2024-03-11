@@ -1,5 +1,6 @@
 class FollowRequestsController < ApplicationController
   before_action :set_follow_request, only: %i[ show edit update destroy ]
+  before_action { authorize @follow_request || FollowRequest }
 
   # GET /follow_requests or /follow_requests.json
   def index
@@ -23,9 +24,14 @@ class FollowRequestsController < ApplicationController
   def create
     @follow_request = FollowRequest.new(follow_request_params)
     @follow_request.sender = current_user
-
+  
     respond_to do |format|
-      if @follow_request.save
+      if @follow_request.sender == @follow_request.recipient
+        flash.now[:alert] = "Sender can't follow themselves"
+        # format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: { error: "Sender can't follow themselves" }, status: :unprocessable_entity }
+      elsif @follow_request.save
         format.html { redirect_back fallback_location: root_url, notice: "Follow request was successfully created." }
         format.json { render :show, status: :created, location: @follow_request }
       else
@@ -34,6 +40,7 @@ class FollowRequestsController < ApplicationController
       end
     end
   end
+  
 
   # PATCH/PUT /follow_requests/1 or /follow_requests/1.json
   def update
@@ -58,13 +65,14 @@ class FollowRequestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_follow_request
-      @follow_request = FollowRequest.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def follow_request_params
-      params.require(:follow_request).permit(:recipient_id, :sender_id, :status)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_follow_request
+    @follow_request = FollowRequest.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def follow_request_params
+    params.require(:follow_request).permit(:recipient_id, :sender_id, :status)
+  end
 end
